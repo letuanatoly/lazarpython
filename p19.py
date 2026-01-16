@@ -7,10 +7,11 @@
 # В начальный момент в куче было S камней; 1 ≤ S ≤ 51.
 # Будем говорить, что игрок имеет выигрышную стратегию, если он может выиграть при любых ходах противника.
 # Укажите минимальное значение S, при котором Петя выигрывает первым ходом.
+from random import choice
 
-move_list = []  # список ходов: 1 ход - Петя, 2 ход - Ваня и т.д. Значения '+1', '*2'
-GameOver = False    # признак конца игры
-def moveP(S):
+# Функция рассчёта следующего хода
+def AddStones(S, move_list, GameOver=True):
+    # Варианты ходов на выигрыш 
     if S + 1 >= 52:
         move_list.append('+1')
         S += 1
@@ -20,7 +21,36 @@ def moveP(S):
         S *= 2
         GameOver = True
     else:
-        if S + 1
-        
-        if GameOver:
-            move_list
+        # Варианты ходов без непосредственного выигрыша
+        if (S + 1) + 1 < 52 and (S + 1) * 2 < 52:
+            move_list.append('+1')
+            S += 1
+        elif (S * 2) + 1 < 52 and (S * 2) * 2 < 52:
+            move_list.append('*2')
+            S *= 2
+        # Делаем случаный ход, при котором соперник может выиграть
+        else:
+            nextmove = choice(["+1", "*2"])
+            move_list.append('nextmove')
+            if nextmove == "+1":
+                S += 1
+            elif nextmove == "*2":
+                S *= 2
+
+Smin = 0
+move_list_min = []
+for S in range(1, 52):
+    move_list = []  # список ходов: 1 ход - Петя, 2 ход - Ваня и т.д. Значения '+1', '*2'
+    GameOver = False    # признак конца игры
+    k = 0 # Количество сделанных ходов в игре
+    while not GameOver:
+        AddStones(S, move_list)
+        k += 1
+    if k == 1:
+        # Выигрывает первым же ходом Петя
+        if Smin == 0 or S < Smin:
+            Smin = S
+            move_list_min = move_list[:]
+
+print(f"Минимальное число камней в начальной куче, при котором Петя выигрывает первым же ходом, равно {Smin}")
+print("Список ходов", move_list_min)
