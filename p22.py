@@ -1,16 +1,9 @@
-data = {} # словарь для данных из файла
+data = []
 
 f = open(input("Введите имя файла: "))
 next(f)  # Пропускаем заголовок (первая строка)
 for line in f:
-    # Разрезаем строку на 3 части по табуляции
-    columns = line.strip().split('\t')
-    idB = columns[0]
-    duration = int(columns[1])
-    idA = columns[2].split(';')
-    # Добавляем в словарь
-    data[idB] = [duration, idA]
-
+    data.append(line.strip().split('\t'))
 # Проверка
 for row in data:
-    print(f"{row}\t{data[row][0]}\t{data[row][1]}")
+    print(f"{row[0]}\t{row[1]}\t{row[2]}")
